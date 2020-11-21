@@ -2,6 +2,7 @@ package com.hackclub.hccore;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -20,22 +21,27 @@ import com.hackclub.hccore.commands.UpvoteCommand;
 import com.hackclub.hccore.listeners.AFKListener;
 import com.hackclub.hccore.listeners.AdvancementListener;
 import com.hackclub.hccore.listeners.BeehiveInteractionListener;
+import com.hackclub.hccore.listeners.ChatListener;
 import com.hackclub.hccore.listeners.NameChangeListener;
 import com.hackclub.hccore.listeners.PlayerListener;
 import com.hackclub.hccore.listeners.SleepListener;
 import com.hackclub.hccore.tasks.AutoAFKTask;
 import com.hackclub.hccore.tasks.CheckAdAstraTask;
 import com.hackclub.hccore.utils.TimeUtil;
+
 import org.bukkit.GameRule;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.PluginManager;
+
 import hu.trigary.advancementcreator.Advancement;
 import hu.trigary.advancementcreator.AdvancementFactory;
 import hu.trigary.advancementcreator.shared.ItemObject;
 import net.md_5.bungee.api.chat.TextComponent;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class HCCorePlugin extends JavaPlugin {
     private DataManager dataManager;
@@ -43,6 +49,10 @@ public class HCCorePlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        Dotenv dotenv = Dotenv.configure()
+                .directory(".")
+                .load();
+
         // Disable default advancement announcements
         for (World world : this.getServer().getWorlds()) {
             world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
@@ -69,12 +79,13 @@ public class HCCorePlugin extends JavaPlugin {
         this.getCommand("upvote").setExecutor(new UpvoteCommand(this));
 
         // Register event listeners
-        this.getServer().getPluginManager().registerEvents(new AdvancementListener(this), this);
-        this.getServer().getPluginManager().registerEvents(new AFKListener(this), this);
-        this.getServer().getPluginManager().registerEvents(new BeehiveInteractionListener(this),
-                this);
-        this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
-        this.getServer().getPluginManager().registerEvents(new SleepListener(this), this);
+        PluginManager pm = this.getServer().getPluginManager();
+        pm.registerEvents(new AdvancementListener(this), this);
+        pm.registerEvents(new AFKListener(this), this);
+        pm.registerEvents(new BeehiveInteractionListener(this), this);
+        pm.registerEvents(new ChatListener(this, dotenv), this);
+        pm.registerEvents(new PlayerListener(this), this);
+        pm.registerEvents(new SleepListener(this), this);
 
         // Register packet listeners
         this.getProtocolManager().addPacketListener(new NameChangeListener(this,

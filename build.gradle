@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'com.google.protobuf' version '0.8.13'
 }
 
 mainClassName = "com.hackclub.hccore.HCCorePluginJava"
@@ -14,6 +15,22 @@ shadowJar {
 
 processResources {
     expand(name: rootProject.name, version: "1.0.0")
+}
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:3.12.0"
+  }
+  plugins {
+    grpc {
+      artifact = 'io.grpc:protoc-gen-grpc-java:1.33.1'
+    }
+  }
+  generateProtoTasks {
+    all()*.plugins {
+      grpc {}
+    }
+  }
 }
 
 repositories {
@@ -37,8 +54,15 @@ dependencies {
     implementation 'com.github.Trigary:AdvancementCreator:v2.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'de.tr7zw:item-nbt-api:2.6.0'
+    implementation 'io.github.cdimascio:dotenv-java:2.2.0'
 
     compileOnly 'com.comphenix.protocol:ProtocolLib:4.5.1'
     compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
     compileOnly 'org.spigotmc:spigot:1.16.4-R0.1-SNAPSHOT'
+
+    // protobuf
+    implementation 'io.grpc:grpc-netty-shaded:1.33.1'
+    implementation 'io.grpc:grpc-protobuf:1.33.1'
+    implementation 'io.grpc:grpc-stub:1.33.1'
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // required for Java 9+
 }

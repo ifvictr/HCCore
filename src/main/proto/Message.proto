@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.hackclub.hccore";
+option java_outer_classname = "HelloWorldProto";
+
+package helloworld;
+
+service Messenger {
+  rpc SendSlackMessage(SlackMessageRequest) returns (SlackMessageReply) {}
+}
+
+message SlackMessageRequest {
+  string name = 1;
+  string player = 2;
+  string text = 3;
+}
+
+message SlackMessageReply {
+  string message = 1;
+  int32 status = 2;
+}
