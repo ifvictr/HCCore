@@ -1,11 +1,8 @@
-.DS_Store
-
+**/.DS_Store
 .idea/
 .settings/
+target/
 .classpath
 .project
 *.iml
-
-.gradle/
-build/
-bin/
+pom.xml.bak

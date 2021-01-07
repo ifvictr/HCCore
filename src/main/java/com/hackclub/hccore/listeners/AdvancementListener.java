@@ -7,7 +7,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Statistic;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
-import org.bukkit.craftbukkit.v1_16_R3.advancement.CraftAdvancement;
+import org.bukkit.craftbukkit.v1_16_R1.advancement.CraftAdvancement;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,9 +19,9 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.minecraft.server.v1_16_R3.AdvancementDisplay;
-import net.minecraft.server.v1_16_R3.AdvancementFrameType;
-import net.minecraft.server.v1_16_R3.IChatBaseComponent;
+import net.minecraft.server.v1_16_R1.AdvancementDisplay;
+import net.minecraft.server.v1_16_R1.AdvancementFrameType;
+import net.minecraft.server.v1_16_R1.IChatBaseComponent;
 
 public class AdvancementListener implements Listener {
     private final HCCorePlugin plugin;
@@ -137,7 +137,7 @@ public class AdvancementListener implements Listener {
         try {
             // NOTE: We interface with Minecraft's internal code here. It is unlikely, but possible
             // for it to break in the case of a future upgrade.
-            net.minecraft.server.v1_16_R3.Advancement nmsAdvancement =
+            net.minecraft.server.v1_16_R1.Advancement nmsAdvancement =
                     ((CraftAdvancement) advancement).getHandle();
             AdvancementDisplay display = nmsAdvancement.c();
 

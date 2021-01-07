@@ -3,6 +3,5 @@
   "files.trimTrailingWhitespace": true,
   "java.format.settings.profile": "GoogleStyle",
   "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
-  "java.saveActions.organizeImports": true,
-  "java.configuration.updateBuildConfiguration": "automatic"
+  "java.saveActions.organizeImports": true
 }

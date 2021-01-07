@@ -4,7 +4,7 @@
     {
       "label": "Build plugin",
       "type": "shell",
-      "command": "gradle build",
+      "command": "mvn -B install",
       "group": "build",
       "presentation": {
         "group": "dev"

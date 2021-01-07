@@ -24,29 +24,24 @@ To join the server, launch your Minecraft client, and click `[Direct Connection]
 
 ## 2. Download and Build HCCore
 
-We use [Gradle](https://gradle.org/install) for dependency management and as a build time tool
+Ensure [maven](https://maven.apache.org/download.cgi) is installed
 
 ```sh
 git clone https://github.com/hackclub/HCCore
 cd HCCore
-
-# linux
-./gradlew build
-
-# windows
-./gradlew.bat build
+mvn package
 ```
 
 ## 3. Copy the Built HCCore Plugin to the Minecraft Paper Server
 
 ```sh
-cp ~/HCCore/build/libs/HCCore-Shadow.jar ~/minecraft-server/plugins
+cp ~/HCCore/target/HCCore.jar ~/minecraft-server/plugins
 ```
 
 On launch, you should receive an error:
 
 ```txt
-[00:33:58 ERROR]: Could not load 'plugins/HCCore-Shadow.jar' in folder 'plugins'
+[00:33:58 ERROR]: Could not load 'plugins/HCCore.jar' in folder 'plugins'
 org.bukkit.plugin.UnknownDependencyException: Unknown dependency ProtocolLib. Please download and install ProtocolLib to run this plugin.
 	at org.bukkit.plugin.SimplePluginManager.loadPlugins(SimplePluginManager.java:272) ~[patched_1.16.4.jar:git-Paper-261]
 	at org.bukkit.craftbukkit.v1_16_R3.CraftServer.loadPlugins(CraftServer.java:389) ~[patched_1.16.4.jar:git-Paper-261]
@@ -82,8 +77,8 @@ Once you have made your modifications, rebuild
 
 ```
 cd ~/HCCore
-./gradlew build
-cp ~/HCCore/build/libs/HCCore-Shadow.jar ~/minecraft-server/plugins
+mvn package
+cp ~/HCCore/target/HCCore.jar ~/minecraft-server/plugins
 ```
 
 Without closing the server, your console should look like the following
