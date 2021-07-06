@@ -17,9 +17,16 @@ public class TableflipCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
+    public boolean onCommand(
+        CommandSender sender,
+        Command cmd,
+        String alias,
+        String[] args
+    ) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "You must be a player to use this");
+            sender.sendMessage(
+                ChatColor.RED + "You must be a player to use this"
+            );
             return true;
         }
 
@@ -27,7 +34,9 @@ public class TableflipCommand implements CommandExecutor {
         if (args.length == 0) {
             player.chat(TableflipCommand.TABLEFLIP);
         } else {
-            player.chat(String.join(" ", args) + " " + TableflipCommand.TABLEFLIP);
+            player.chat(
+                String.join(" ", args) + " " + TableflipCommand.TABLEFLIP
+            );
         }
 
         return true;

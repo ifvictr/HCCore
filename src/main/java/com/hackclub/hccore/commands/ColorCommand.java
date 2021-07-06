@@ -1,12 +1,12 @@
 package com.hackclub.hccore.commands;
 
+import com.hackclub.hccore.HCCorePlugin;
+import com.hackclub.hccore.PlayerData;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.hackclub.hccore.HCCorePlugin;
-import com.hackclub.hccore.PlayerData;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,9 +15,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 public class ColorCommand implements TabExecutor {
-    private static final List<String> COLOR_NAMES =
-            Arrays.asList(ChatColor.values()).stream().filter(value -> value.isColor())
-                    .map(color -> color.name().toLowerCase()).collect(Collectors.toList());
+    private static final List<String> COLOR_NAMES = Arrays
+        .asList(ChatColor.values())
+        .stream()
+        .filter(value -> value.isColor())
+        .map(color -> color.name().toLowerCase())
+        .collect(Collectors.toList());
 
     private final HCCorePlugin plugin;
 
@@ -26,9 +29,16 @@ public class ColorCommand implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
+    public boolean onCommand(
+        CommandSender sender,
+        Command cmd,
+        String alias,
+        String[] args
+    ) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "You must be a player to use this");
+            sender.sendMessage(
+                ChatColor.RED + "You must be a player to use this"
+            );
             return true;
         }
 
@@ -65,7 +75,9 @@ public class ColorCommand implements TabExecutor {
                     break;
                 }
                 data.setMessageColor(newColor);
-                sender.sendMessage("Your chat color has been set to " + newColor + "this color");
+                sender.sendMessage(
+                    "Your chat color has been set to " + newColor + "this color"
+                );
                 break;
             // /color name [color]
             case "name":
@@ -75,7 +87,9 @@ public class ColorCommand implements TabExecutor {
                     break;
                 }
                 data.setNameColor(newColor);
-                sender.sendMessage("Your name color has been set to " + newColor + "this color");
+                sender.sendMessage(
+                    "Your name color has been set to " + newColor + "this color"
+                );
                 break;
             default:
                 return false;
@@ -85,8 +99,12 @@ public class ColorCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command cmd, String alias,
-            String[] args) {
+    public List<String> onTabComplete(
+        CommandSender sender,
+        Command cmd,
+        String alias,
+        String[] args
+    ) {
         if (!(sender instanceof Player)) {
             return null;
         }
@@ -96,15 +114,28 @@ public class ColorCommand implements TabExecutor {
             // Complete subcommand
             case 1:
                 List<String> subcommands = Arrays.asList("chat", "name");
-                StringUtil.copyPartialMatches(args[0], subcommands, completions);
+                StringUtil.copyPartialMatches(
+                    args[0],
+                    subcommands,
+                    completions
+                );
                 break;
             // Complete color name for /color chat and /color name
             case 2:
-                if (!(args[0].equalsIgnoreCase("chat") || args[0].equalsIgnoreCase("name"))) {
+                if (
+                    !(
+                        args[0].equalsIgnoreCase("chat") ||
+                        args[0].equalsIgnoreCase("name")
+                    )
+                ) {
                     break;
                 }
 
-                StringUtil.copyPartialMatches(args[1], COLOR_NAMES, completions);
+                StringUtil.copyPartialMatches(
+                    args[1],
+                    COLOR_NAMES,
+                    completions
+                );
                 break;
         }
 

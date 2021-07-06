@@ -13,9 +13,14 @@ public class TimeUtil {
     public static String toPrettyTime(int ticks, boolean full) {
         int totalSeconds = ticks / TimeUtil.TICKS_PER_SECOND;
         int days = (int) TimeUnit.SECONDS.toDays(totalSeconds);
-        int hours = (int) (TimeUnit.SECONDS.toHours(totalSeconds) - TimeUnit.DAYS.toHours(days));
-        int minutes = (int) (TimeUnit.SECONDS.toMinutes(totalSeconds)
-                - TimeUnit.DAYS.toMinutes(days) - TimeUnit.HOURS.toMinutes(hours));
+        int hours = (int) (
+            TimeUnit.SECONDS.toHours(totalSeconds) - TimeUnit.DAYS.toHours(days)
+        );
+        int minutes = (int) (
+            TimeUnit.SECONDS.toMinutes(totalSeconds) -
+            TimeUnit.DAYS.toMinutes(days) -
+            TimeUnit.HOURS.toMinutes(hours)
+        );
         int seconds = totalSeconds % TimeUtil.SECONDS_PER_MINUTE;
 
         String format = "";

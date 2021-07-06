@@ -1,5 +1,8 @@
 package com.hackclub.hccore;
 
+import com.google.gson.annotations.Expose;
+import com.hackclub.hccore.events.player.PlayerAFKStatusChangeEvent;
+import com.hackclub.hccore.utils.gson.GsonUtil;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -7,9 +10,6 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
-import com.google.gson.annotations.Expose;
-import com.hackclub.hccore.events.player.PlayerAFKStatusChangeEvent;
-import com.hackclub.hccore.utils.gson.GsonUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -31,12 +31,16 @@ public class PlayerData {
     // Persistent data
     @Expose
     private String nickname = null;
+
     @Expose
     private String slackId = null;
+
     @Expose
     private ChatColor nameColor = ChatColor.WHITE;
+
     @Expose
     private ChatColor messageColor = ChatColor.GRAY;
+
     @Expose
     private Map<String, Location> savedLocations = new LinkedHashMap<>();
 
@@ -44,7 +48,10 @@ public class PlayerData {
         this.plugin = plugin;
         this.player = player;
         this.dataFile =
-                new File(plugin.getDataManager().getDataFolder(), player.getUniqueId() + ".json");
+            new File(
+                plugin.getDataManager().getDataFolder(),
+                player.getUniqueId() + ".json"
+            );
     }
 
     public boolean isAfk() {
@@ -86,7 +93,10 @@ public class PlayerData {
 
     public void setNickname(String nickname) {
         // Validate length if a nickname was specified
-        if (nickname != null && nickname.length() > PlayerData.MAX_NICKNAME_LENGTH) {
+        if (
+            nickname != null &&
+            nickname.length() > PlayerData.MAX_NICKNAME_LENGTH
+        ) {
             return;
         }
 
@@ -94,8 +104,10 @@ public class PlayerData {
         this.nickname = nickname;
         this.updateDisplayedName();
 
-        // Team#addEntry takes in a string, which in our case, will be a player name. We have to
-        // remove the old name and add the new one so the game has a reference to the player.
+        // Team#addEntry takes in a string, which in our case, will be a player name. We
+        // have to
+        // remove the old name and add the new one so the game has a reference to the
+        // player.
         this.getTeam().removeEntry(oldName);
         this.getTeam().addEntry(this.getUsableName());
     }
@@ -113,7 +125,8 @@ public class PlayerData {
     }
 
     public void setNameColor(ChatColor color) {
-        this.nameColor = (color != null && color.isColor()) ? color : ChatColor.WHITE;
+        this.nameColor =
+            (color != null && color.isColor()) ? color : ChatColor.WHITE;
         this.updateDisplayedName();
 
         this.getTeam().setColor(this.getNameColor());
@@ -124,7 +137,8 @@ public class PlayerData {
     }
 
     public void setMessageColor(ChatColor color) {
-        this.messageColor = (color != null && color.isColor()) ? color : ChatColor.GRAY;
+        this.messageColor =
+            (color != null && color.isColor()) ? color : ChatColor.GRAY;
     }
 
     public Map<String, Location> getSavedLocations() {
@@ -132,8 +146,10 @@ public class PlayerData {
     }
 
     public Team getTeam() {
-        return this.player.getServer().getScoreboardManager().getMainScoreboard()
-                .getTeam(this.player.getName());
+        return this.player.getServer()
+            .getScoreboardManager()
+            .getMainScoreboard()
+            .getTeam(this.player.getName());
     }
 
     public void load() {
@@ -141,15 +157,21 @@ public class PlayerData {
             this.dataFile.getParentFile().mkdirs();
 
             if (!this.dataFile.exists()) {
-                this.plugin.getLogger().log(Level.INFO,
-                        "No data file found for " + this.player.getName() + ", creating…");
+                this.plugin.getLogger()
+                    .log(
+                        Level.INFO,
+                        "No data file found for " +
+                        this.player.getName() +
+                        ", creating…"
+                    );
                 this.dataFile.createNewFile();
                 this.save();
             }
 
             // Populate this instance
-            PlayerData data = GsonUtil.getInstance().fromJson(new FileReader(this.dataFile),
-                    PlayerData.class);
+            PlayerData data = GsonUtil
+                .getInstance()
+                .fromJson(new FileReader(this.dataFile), PlayerData.class);
             this.setNickname(data.nickname);
             this.setSlackId(data.slackId);
             this.setNameColor(data.nameColor);
@@ -173,7 +195,9 @@ public class PlayerData {
     }
 
     public String getUsableName() {
-        return this.getNickname() != null ? this.getNickname() : this.player.getName();
+        return this.getNickname() != null
+            ? this.getNickname()
+            : this.player.getName();
     }
 
     public String getDisplayedName() {
@@ -196,11 +220,16 @@ public class PlayerData {
 
     private void refreshNameTag() {
         for (Player onlinePlayer : this.player.getServer().getOnlinePlayers()) {
-            if (onlinePlayer.equals(this.player) || !onlinePlayer.canSee(this.player)) {
+            if (
+                onlinePlayer.equals(this.player) ||
+                !onlinePlayer.canSee(this.player)
+            ) {
                 continue;
             }
-            // Showing the player again after they've been hidden causes a Player Info packet to be
-            // sent, which is then intercepted by NameChangeListener. The actual modification of the
+            // Showing the player again after they've been hidden causes a Player Info
+            // packet to be
+            // sent, which is then intercepted by NameChangeListener. The actual
+            // modification of the
             // name tag takes place there.
             onlinePlayer.hidePlayer(this.plugin, this.player);
             onlinePlayer.showPlayer(this.plugin, this.player);

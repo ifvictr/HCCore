@@ -23,11 +23,17 @@ public class AutoAFKTask extends BukkitRunnable {
             }
 
             long secondsSinceLastActive =
-                    (System.currentTimeMillis() - data.getLastActiveAt()) / 1000;
-            if (secondsSinceLastActive > this.plugin.getConfig().getInt("settings.auto-afk-time")) {
+                (System.currentTimeMillis() - data.getLastActiveAt()) / 1000;
+            if (
+                secondsSinceLastActive >
+                this.plugin.getConfig().getInt("settings.auto-afk-time")
+            ) {
                 data.setAfk(true);
-                player.sendMessage(ChatColor.GRAY + ChatColor.ITALIC.toString()
-                        + "You’ve been automatically set to AFK due to inactivity.");
+                player.sendMessage(
+                    ChatColor.GRAY +
+                    ChatColor.ITALIC.toString() +
+                    "You’ve been automatically set to AFK due to inactivity."
+                );
             }
         }
     }

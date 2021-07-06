@@ -30,27 +30,38 @@ public class SleepListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerAFKStatusChange(final PlayerAFKStatusChangeEvent event) {
+    public void onPlayerAFKStatusChange(
+        final PlayerAFKStatusChangeEvent event
+    ) {
         // Wake the player up if they become AFK while sleeping
         Player player = event.getPlayer();
         if (event.getNewValue() && player.isSleeping()) {
             player.wakeup(true);
-            player.sendMessage(ChatColor.RED + "You can’t sleep while you’re AFK.");
+            player.sendMessage(
+                ChatColor.RED + "You can’t sleep while you’re AFK."
+            );
         }
     }
 
     @EventHandler
     public void onPlayerBedEnter(final PlayerBedEnterEvent event) {
         // Ignore unsuccessful attempts to sleep
-        if (event.getBedEnterResult() != PlayerBedEnterEvent.BedEnterResult.OK) {
+        if (
+            event.getBedEnterResult() != PlayerBedEnterEvent.BedEnterResult.OK
+        ) {
             return;
         }
 
         // Only allow active players to sleep
-        PlayerData data = this.plugin.getDataManager().getData(event.getPlayer());
+        PlayerData data =
+            this.plugin.getDataManager().getData(event.getPlayer());
         if (data.isAfk()) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(ChatColor.RED + "You can’t sleep while you’re AFK.");
+            event
+                .getPlayer()
+                .sendMessage(
+                    ChatColor.RED + "You can’t sleep while you’re AFK."
+                );
             return;
         }
 
@@ -58,12 +69,23 @@ public class SleepListener implements Listener {
         // Add 1 to account for the player that just slept
         int sleepingPlayers = this.getSleepingPlayers(currentWorld) + 1;
         int minSleepingPlayers = this.getMinSleepingPlayersNeeded(currentWorld);
-        this.broadcastMessageToWorld(ChatColor.GOLD
-                + ChatColor.stripColor(event.getPlayer().getDisplayName()) + " is now sleeping ("
-                + sleepingPlayers + "/" + minSleepingPlayers + " needed)", currentWorld);
+        this.broadcastMessageToWorld(
+                ChatColor.GOLD +
+                ChatColor.stripColor(event.getPlayer().getDisplayName()) +
+                " is now sleeping (" +
+                sleepingPlayers +
+                "/" +
+                minSleepingPlayers +
+                " needed)",
+                currentWorld
+            );
 
         if (sleepingPlayers < minSleepingPlayers) {
-            event.getPlayer().getServer().getScheduler().cancelTask(this.advanceTimeTaskId);
+            event
+                .getPlayer()
+                .getServer()
+                .getScheduler()
+                .cancelTask(this.advanceTimeTaskId);
             return;
         }
 
@@ -78,13 +100,24 @@ public class SleepListener implements Listener {
 
         // Only show wake message if it's still within sleeping periods
         if (this.canSleep(currentWorld)) {
-            this.broadcastMessageToWorld(ChatColor.GOLD
-                    + ChatColor.stripColor(event.getPlayer().getDisplayName()) + " has woken up ("
-                    + sleepingPlayers + "/" + minSleepingPlayers + " needed)", currentWorld);
+            this.broadcastMessageToWorld(
+                    ChatColor.GOLD +
+                    ChatColor.stripColor(event.getPlayer().getDisplayName()) +
+                    " has woken up (" +
+                    sleepingPlayers +
+                    "/" +
+                    minSleepingPlayers +
+                    " needed)",
+                    currentWorld
+                );
         }
 
         if (sleepingPlayers < minSleepingPlayers) {
-            event.getPlayer().getServer().getScheduler().cancelTask(this.advanceTimeTaskId);
+            event
+                .getPlayer()
+                .getServer()
+                .getScheduler()
+                .cancelTask(this.advanceTimeTaskId);
             return;
         }
 
@@ -98,9 +131,15 @@ public class SleepListener implements Listener {
             return;
         }
 
-        if (this.getSleepingPlayers(currentWorld) < this
-                .getMinSleepingPlayersNeeded(currentWorld)) {
-            event.getPlayer().getServer().getScheduler().cancelTask(this.advanceTimeTaskId);
+        if (
+            this.getSleepingPlayers(currentWorld) <
+            this.getMinSleepingPlayersNeeded(currentWorld)
+        ) {
+            event
+                .getPlayer()
+                .getServer()
+                .getScheduler()
+                .cancelTask(this.advanceTimeTaskId);
             return;
         }
 
@@ -114,9 +153,15 @@ public class SleepListener implements Listener {
             return;
         }
 
-        if (this.getSleepingPlayers(
-                currentWorld) < (this.getMinSleepingPlayersNeeded(currentWorld) - 1)) {
-            event.getPlayer().getServer().getScheduler().cancelTask(this.advanceTimeTaskId);
+        if (
+            this.getSleepingPlayers(currentWorld) <
+            (this.getMinSleepingPlayersNeeded(currentWorld) - 1)
+        ) {
+            event
+                .getPlayer()
+                .getServer()
+                .getScheduler()
+                .cancelTask(this.advanceTimeTaskId);
             return;
         }
 
@@ -124,8 +169,16 @@ public class SleepListener implements Listener {
     }
 
     private void broadcastMessageToWorld(String message, World world) {
-        this.plugin.getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "Broadcasted to "
-                + world.getName() + ": " + ChatColor.RESET + message);
+        this.plugin.getServer()
+            .getConsoleSender()
+            .sendMessage(
+                ChatColor.GRAY +
+                "Broadcasted to " +
+                world.getName() +
+                ": " +
+                ChatColor.RESET +
+                message
+            );
 
         for (Player player : world.getPlayers()) {
             player.sendMessage(message);
@@ -133,38 +186,61 @@ public class SleepListener implements Listener {
     }
 
     private void checkCanSkip(World world) {
-        this.advanceTimeTaskId = this.plugin.getServer().getScheduler()
-                .scheduleSyncDelayedTask(this.plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        if (world.getPlayers().size() == 0 || getSleepingPlayers(world) == 0) {
-                            return;
-                        }
+        this.advanceTimeTaskId =
+            this.plugin.getServer()
+                .getScheduler()
+                .scheduleSyncDelayedTask(
+                    this.plugin,
+                    new Runnable() {
 
-                        // Don't advance if we no longer have the minimum players needed
-                        if (getSleepingPlayers(world) < getMinSleepingPlayersNeeded(world)) {
-                            return;
-                        }
+                        @Override
+                        public void run() {
+                            if (
+                                world.getPlayers().size() == 0 ||
+                                getSleepingPlayers(world) == 0
+                            ) {
+                                return;
+                            }
 
-                        // Advance to morning and clear thunderstorms
-                        world.setTime(SleepListener.WAKE_AT_TICK);
-                        if (world.isThundering()) {
-                            world.setThundering(false);
-                            world.setStorm(false);
-                        }
+                            // Don't advance if we no longer have the minimum players needed
+                            if (
+                                getSleepingPlayers(world) <
+                                getMinSleepingPlayersNeeded(world)
+                            ) {
+                                return;
+                            }
 
-                        broadcastMessageToWorld(
-                                ChatColor.GREEN + "Good morning! Let's get this mf bread.", world);
-                    }
-                }, SleepListener.SLEEP_DURATION_TICKS);
+                            // Advance to morning and clear thunderstorms
+                            world.setTime(SleepListener.WAKE_AT_TICK);
+                            if (world.isThundering()) {
+                                world.setThundering(false);
+                                world.setStorm(false);
+                            }
+
+                            broadcastMessageToWorld(
+                                ChatColor.GREEN +
+                                "Good morning! Let's get this mf bread.",
+                                world
+                            );
+                        }
+                    },
+                    SleepListener.SLEEP_DURATION_TICKS
+                );
     }
 
     private boolean canSleep(World world) {
-        return world.isThundering()
-                || (world.hasStorm() && world.getTime() >= SleepListener.STORM_SLEEP_START_TICK
-                        && world.getTime() < SleepListener.STORM_SLEEP_END_TICK)
-                || (world.getTime() >= SleepListener.CLEAR_SLEEP_START_TICK
-                        && world.getTime() < SleepListener.CLEAR_SLEEP_END_TICK);
+        return (
+            world.isThundering() ||
+            (
+                world.hasStorm() &&
+                world.getTime() >= SleepListener.STORM_SLEEP_START_TICK &&
+                world.getTime() < SleepListener.STORM_SLEEP_END_TICK
+            ) ||
+            (
+                world.getTime() >= SleepListener.CLEAR_SLEEP_START_TICK &&
+                world.getTime() < SleepListener.CLEAR_SLEEP_END_TICK
+            )
+        );
     }
 
     private int getSleepingPlayers(World world) {
@@ -181,12 +257,15 @@ public class SleepListener implements Listener {
         // Get the number of AFK players
         int afkPlayersCount = 0;
         for (Player player : world.getPlayers()) {
-            PlayerData playerData = this.plugin.getDataManager().getData(player);
+            PlayerData playerData =
+                this.plugin.getDataManager().getData(player);
             if (playerData.isAfk()) {
                 afkPlayersCount++;
             }
         }
-        return (int) Math.ceil((world.getPlayers().size() - afkPlayersCount)
-                * this.plugin.getConfig().getDouble("settings.skip-sleep-threshold"));
+        return (int) Math.ceil(
+            (world.getPlayers().size() - afkPlayersCount) *
+            this.plugin.getConfig().getDouble("settings.skip-sleep-threshold")
+        );
     }
 }

@@ -45,8 +45,9 @@ public class AdvancementListener implements Listener {
 
         Player player = event.getPlayer();
         NamespacedKey key = new NamespacedKey(this.plugin, "mine_diamond_ore");
-        AdvancementProgress progress =
-                player.getAdvancementProgress(player.getServer().getAdvancement(key));
+        AdvancementProgress progress = player.getAdvancementProgress(
+            player.getServer().getAdvancement(key)
+        );
         // Skip if player already has this advancement
         if (progress.isDone()) {
             return;
@@ -64,25 +65,40 @@ public class AdvancementListener implements Listener {
 
         Player player = (Player) event.getEntity().getKiller();
         switch (event.getEntityType()) {
-            case ELDER_GUARDIAN: {
-                this.grantAdvancement(player,
-                        new NamespacedKey(this.plugin, "kill_elder_guardian"));
-                break;
-            }
-            case ENDER_DRAGON: {
-                this.incrementAdvancementProgress(player,
-                        new NamespacedKey(this.plugin, "kill_dragon_insane"));
+            case ELDER_GUARDIAN:
+                {
+                    this.grantAdvancement(
+                            player,
+                            new NamespacedKey(
+                                this.plugin,
+                                "kill_elder_guardian"
+                            )
+                        );
+                    break;
+                }
+            case ENDER_DRAGON:
+                {
+                    this.incrementAdvancementProgress(
+                            player,
+                            new NamespacedKey(this.plugin, "kill_dragon_insane")
+                        );
 
-                // Give "The Next Generation" since it's not easy to get it after the egg
-                // is taken
-                this.grantAdvancement(player, NamespacedKey.minecraft("end/dragon_egg"));
-                break;
-            }
-            case WITHER: {
-                this.incrementAdvancementProgress(player,
-                        new NamespacedKey(this.plugin, "kill_wither_insane"));
-                break;
-            }
+                    // Give "The Next Generation" since it's not easy to get it after the egg
+                    // is taken
+                    this.grantAdvancement(
+                            player,
+                            NamespacedKey.minecraft("end/dragon_egg")
+                        );
+                    break;
+                }
+            case WITHER:
+                {
+                    this.incrementAdvancementProgress(
+                            player,
+                            new NamespacedKey(this.plugin, "kill_wither_insane")
+                        );
+                    break;
+                }
             default:
                 break;
         }
@@ -103,13 +119,17 @@ public class AdvancementListener implements Listener {
 
         // Check the player has flown over 1m miles (1,609,344 km)
         final int CM_PER_MILE = 160934;
-        if (player.getStatistic(Statistic.AVIATE_ONE_CM) <= (1000000 * CM_PER_MILE)) {
+        if (
+            player.getStatistic(Statistic.AVIATE_ONE_CM) <=
+            (1000000 * CM_PER_MILE)
+        ) {
             return;
         }
 
         NamespacedKey key = new NamespacedKey(this.plugin, "million_miler");
-        AdvancementProgress progress =
-                player.getAdvancementProgress(player.getServer().getAdvancement(key));
+        AdvancementProgress progress = player.getAdvancementProgress(
+            player.getServer().getAdvancement(key)
+        );
         // Skip if player already has this advancement
         if (progress.isDone()) {
             return;
@@ -119,26 +139,45 @@ public class AdvancementListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerAdvancementDone(final PlayerAdvancementDoneEvent event) {
+    public void onPlayerAdvancementDone(
+        final PlayerAdvancementDoneEvent event
+    ) {
         Player player = event.getPlayer();
         Advancement advancement = event.getAdvancement();
 
-        if (advancement.getKey().equals(new NamespacedKey(this.plugin, "mine_diamond_ore"))) {
-            player.sendMessage(ChatColor.GREEN
-                    + "Congrats, you’ve found your very first diamond! You are now eligible for the exclusive (and limited edition!) Hack Club Minecraft stickers. Head over to "
-                    + ChatColor.UNDERLINE + this.plugin.getConfig().getString("claim-stickers-url")
-                    + ChatColor.RESET + ChatColor.GREEN + " to claim them!*");
-            player.sendMessage(ChatColor.GRAY + ChatColor.ITALIC.toString()
-                    + "*This offer only applies to players who have never received the stickers before. If you have, please do not fill out the form again!");
-            player.sendMessage(ChatColor.GRAY + ChatColor.ITALIC.toString()
-                    + "You will only see this message once.");
+        if (
+            advancement
+                .getKey()
+                .equals(new NamespacedKey(this.plugin, "mine_diamond_ore"))
+        ) {
+            player.sendMessage(
+                ChatColor.GREEN +
+                "Congrats, you’ve found your very first diamond! You are now eligible for the exclusive (and limited edition!) Hack Club Minecraft stickers. Head over to " +
+                ChatColor.UNDERLINE +
+                this.plugin.getConfig().getString("claim-stickers-url") +
+                ChatColor.RESET +
+                ChatColor.GREEN +
+                " to claim them!*"
+            );
+            player.sendMessage(
+                ChatColor.GRAY +
+                ChatColor.ITALIC.toString() +
+                "*This offer only applies to players who have never received the stickers before. If you have, please do not fill out the form again!"
+            );
+            player.sendMessage(
+                ChatColor.GRAY +
+                ChatColor.ITALIC.toString() +
+                "You will only see this message once."
+            );
         }
 
         try {
-            // NOTE: We interface with Minecraft's internal code here. It is unlikely, but possible
+            // NOTE: We interface with Minecraft's internal code here. It is unlikely, but
+            // possible
             // for it to break in the case of a future upgrade.
             net.minecraft.server.v1_16_R3.Advancement nmsAdvancement =
                     ((CraftAdvancement) advancement).getHandle();
+
             AdvancementDisplay display = nmsAdvancement.c();
 
             // Ignore hidden advancements (i.e. recipes)
@@ -159,34 +198,64 @@ public class AdvancementListener implements Listener {
             switch (frameType.a()) {
                 case "task":
                 default:
-                    args = new Object[] {"made", "advancement", ChatColor.GREEN.asBungee()};
+                    args =
+                        new Object[] {
+                            "made",
+                            "advancement",
+                            ChatColor.GREEN.asBungee(),
+                        };
                     break;
                 case "goal":
-                    args = new Object[] {"reached", "goal", ChatColor.GREEN.asBungee()};
+                    args =
+                        new Object[] {
+                            "reached",
+                            "goal",
+                            ChatColor.GREEN.asBungee(),
+                        };
                     break;
                 case "challenge":
-                    args = new Object[] {"completed", "challenge",
-                            ChatColor.DARK_PURPLE.asBungee()};
+                    args =
+                        new Object[] {
+                            "completed",
+                            "challenge",
+                            ChatColor.DARK_PURPLE.asBungee(),
+                        };
                     break;
             }
 
             // Announce custom advancement message
-            BaseComponent nameComponent =
-                    TextComponent.fromLegacyText(ChatColor.stripColor(player.getDisplayName()))[0];
-            nameComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                    TextComponent.fromLegacyText(player.getName())));
-            BaseComponent advancementComponent =
-                    TextComponent.fromLegacyText(titleComponent.getText())[0];
-            advancementComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                    new ComponentBuilder().color((net.md_5.bungee.api.ChatColor) args[2])
-                            .append(titleComponent.getText() + "\n")
-                            .append(descriptionComponent.getText()).create()));
+            BaseComponent nameComponent = TextComponent.fromLegacyText(
+                ChatColor.stripColor(player.getDisplayName())
+            )[0];
+            nameComponent.setHoverEvent(
+                new HoverEvent(
+                    HoverEvent.Action.SHOW_TEXT,
+                    TextComponent.fromLegacyText(player.getName())
+                )
+            );
+            BaseComponent advancementComponent = TextComponent.fromLegacyText(
+                titleComponent.getText()
+            )[0];
+            advancementComponent.setHoverEvent(
+                new HoverEvent(
+                    HoverEvent.Action.SHOW_TEXT,
+                    new ComponentBuilder()
+                        .color((net.md_5.bungee.api.ChatColor) args[2])
+                        .append(titleComponent.getText() + "\n")
+                        .append(descriptionComponent.getText())
+                        .create()
+                )
+            );
 
             BaseComponent[] message = new ComponentBuilder(nameComponent)
-                    .append(String.format(" has %s the %s %s[", args),
-                            ComponentBuilder.FormatRetention.NONE)
-                    .append(advancementComponent).color((net.md_5.bungee.api.ChatColor) args[2])
-                    .append("]", ComponentBuilder.FormatRetention.FORMATTING).create();
+                .append(
+                    String.format(" has %s the %s %s[", args),
+                    ComponentBuilder.FormatRetention.NONE
+                )
+                .append(advancementComponent)
+                .color((net.md_5.bungee.api.ChatColor) args[2])
+                .append("]", ComponentBuilder.FormatRetention.FORMATTING)
+                .create();
             player.getServer().spigot().broadcast(message);
         } catch (Exception e) {
             e.printStackTrace();
@@ -194,8 +263,9 @@ public class AdvancementListener implements Listener {
     }
 
     private void grantAdvancement(Player player, NamespacedKey key) {
-        AdvancementProgress progress =
-                player.getAdvancementProgress(player.getServer().getAdvancement(key));
+        AdvancementProgress progress = player.getAdvancementProgress(
+            player.getServer().getAdvancement(key)
+        );
         if (progress.isDone()) {
             return;
         }
@@ -205,14 +275,20 @@ public class AdvancementListener implements Listener {
         }
     }
 
-    private void incrementAdvancementProgress(Player player, NamespacedKey key) {
-        AdvancementProgress progress =
-                player.getAdvancementProgress(player.getServer().getAdvancement(key));
+    private void incrementAdvancementProgress(
+        Player player,
+        NamespacedKey key
+    ) {
+        AdvancementProgress progress = player.getAdvancementProgress(
+            player.getServer().getAdvancement(key)
+        );
         if (progress.isDone()) {
             return;
         }
 
-        String nextCriteria = String.valueOf(progress.getAwardedCriteria().size());
+        String nextCriteria = String.valueOf(
+            progress.getAwardedCriteria().size()
+        );
         progress.awardCriteria(nextCriteria);
     }
 }

@@ -29,8 +29,9 @@ public class CheckAdAstraTask extends BukkitRunnable {
             }
 
             NamespacedKey key = new NamespacedKey(this.plugin, "ad_astra");
-            AdvancementProgress progress =
-                    player.getAdvancementProgress(player.getServer().getAdvancement(key));
+            AdvancementProgress progress = player.getAdvancementProgress(
+                player.getServer().getAdvancement(key)
+            );
             // Skip if player already has this advancement
             if (progress.isDone()) {
                 continue;
@@ -40,10 +41,10 @@ public class CheckAdAstraTask extends BukkitRunnable {
         }
     }
 
-
     private void grantAdvancement(Player player, NamespacedKey key) {
-        AdvancementProgress progress =
-                player.getAdvancementProgress(player.getServer().getAdvancement(key));
+        AdvancementProgress progress = player.getAdvancementProgress(
+            player.getServer().getAdvancement(key)
+        );
         if (progress.isDone()) {
             return;
         }

@@ -9,3 +9,4 @@
 .gradle/
 build/
 bin/
+infer-out/

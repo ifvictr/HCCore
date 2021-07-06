@@ -1,7 +1,72 @@
 plugins {
+    id 'groovy'
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'pmd'
+    id 'com.github.spotbugs' version "4.6.0"
+    id "com.diffplug.spotless" version "5.8.1"
+}
+
+mainClassName = 'com.hackclub.hccore.HCCorePluginJava'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+shadowJar {
+    archiveBaseName.set('HCCore-Shadow')
+    archiveClassifier.set('')
+    archiveVersion.set('')
+}
+
+pmd {
+    ignoreFailures = true
+}
+
+// checks for bugs
+spotbugs {
+    reportLevel = 'medium'
+    ignoreFailures = true
+    showStackTraces = false
+}
+
+// default 'build' task. we ensure spotlessApply
+// is ran before so the build doesn't fail if the
+// code isn't formatted properly
+build {
+    dependsOn spotlessApply
+}
+
+// code formatter
+// def disableSpotlessCheck = project.hasProperty('disableSpotlessCheck') &&
+//         project.disableSpotlessCheck == 'true'
+spotless {
+    // enforceCheck !disableSpotlessCheck
+
+
+    groovyGradle {
+        greclipse().configFile('formatter.properties')
+        indentWithSpaces(4)
+    }
+
+    java {
+        importOrder()
+        removeUnusedImports()
+
+        // googleJavaFormat()
+        prettier().configFile(".prettierrc.json")
+    }
+}
+
+// adds 'version' to top level project object
+ext {
+    version = '1.0.0'
+}
+
+// ensure ${} variable expansion with files under 'resources'
+processResources {
+    expand(name: rootProject.name, version: project.version)
 }
 
 mainClassName = "com.hackclub.hccore.HCCorePluginJava"
@@ -21,16 +86,16 @@ repositories {
     mavenCentral()
 
     // AdvancementCreator
-    maven { url "https://jitpack.io" }
+    maven { url 'https://jitpack.io' }
 
     // Bukkit
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
 
     // NBT-API
-    maven { url "https://repo.codemc.org/repository/maven-public/" }
+    maven { url 'https://repo.codemc.org/repository/maven-public/' }
 
     // ProtoLib, org.spigotmc:spigot:1.16
-    maven { url "https://repo.dmulloy2.net/nexus/repository/public/" }
+    maven { url 'https://repo.dmulloy2.net/nexus/repository/public/' }
 }
 
 dependencies {
@@ -39,6 +104,8 @@ dependencies {
     implementation 'de.tr7zw:item-nbt-api:2.6.0'
 
     compileOnly 'com.comphenix.protocol:ProtocolLib:4.5.1'
+
+    compile 'com.google.googlejavaformat:google-java-format:1.9'
     compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
     compileOnly 'org.spigotmc:spigot:1.16.4-R0.1-SNAPSHOT'
 }

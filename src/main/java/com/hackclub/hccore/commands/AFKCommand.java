@@ -16,9 +16,16 @@ public class AFKCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
+    public boolean onCommand(
+        CommandSender sender,
+        Command cmd,
+        String alias,
+        String[] args
+    ) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "You must be a player to use this");
+            sender.sendMessage(
+                ChatColor.RED + "You must be a player to use this"
+            );
             return true;
         }
 
