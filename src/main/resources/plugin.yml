@@ -38,3 +38,9 @@ commands:
   upvote:
     description: Appends an upvote to your message
     usage: /upvote [message]
+  angry:
+    description: Appends a angry face to your message
+    usage: /angry [message]
+  flippedbytable:
+    description: Appends ノ┬─┬ノ ︵ (/o°o)/  to your message
+    usage: /flippedbytable [message]
