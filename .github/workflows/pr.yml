@@ -28,7 +28,7 @@ jobs:
     - name: Add SSH key
       run: mkdir $HOME/.ssh && echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_rsa && chmod 400 $HOME/.ssh/id_rsa && ssh-keyscan -H mc.hackclub.com >> ~/.ssh/known_hosts
     - name: Copy jar
-      run: scp build/libs/HCCore-Shadow.jar ubuntu@mc.hackclub.com:/home/ubuntu/HCCore-Shadow.jar
-    - name: Run reboot script
-      run: ssh ubuntu@mc.hackclub.com /home/ubuntu/script/reboot-vanilla.sh
+      run: scp build/libs/HCCore-Shadow.jar ubuntu@mc.hackclub.com:/home/ubuntu/HCCore-Shadow-PR.jar
+    #- name: Run reboot script
+    #  run: ssh ubuntu@mc.hackclub.com /home/ubuntu/script/reboot-vanilla.sh
 
