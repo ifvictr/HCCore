@@ -41,3 +41,6 @@ commands:
   discord:
     description: Gets the invite link to the Hackclub Minecraft Community Discord server
     usage: /discord
+  tutorial:
+    description: Greets new users to the server
+    usage: /tutorial

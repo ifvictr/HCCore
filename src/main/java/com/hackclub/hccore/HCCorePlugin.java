@@ -10,6 +10,20 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.hackclub.hccore.commands.*;
 import com.hackclub.hccore.discord.DiscordBot;
+import com.hackclub.hccore.commands.AFKCommand;
+import com.hackclub.hccore.commands.ColorCommand;
+import com.hackclub.hccore.commands.DownvoteCommand;
+
+import com.hackclub.hccore.commands.LocCommand;
+import com.hackclub.hccore.commands.NickCommand;
+import com.hackclub.hccore.commands.PingCommand;
+import com.hackclub.hccore.commands.ShrugCommand;
+import com.hackclub.hccore.commands.SpawnCommand;
+import com.hackclub.hccore.commands.StatsCommand;
+import com.hackclub.hccore.commands.TableflipCommand;
+import com.hackclub.hccore.commands.TutorialCommand;
+
+import com.hackclub.hccore.commands.UpvoteCommand;
 import com.hackclub.hccore.listeners.AFKListener;
 import com.hackclub.hccore.listeners.AdvancementListener;
 import com.hackclub.hccore.listeners.BeehiveInteractionListener;
@@ -70,8 +84,10 @@ public class HCCorePlugin extends JavaPlugin {
         this.getCommand("spawn").setExecutor(new SpawnCommand(this));
         this.getCommand("stats").setExecutor(new StatsCommand(this));
         this.getCommand("tableflip").setExecutor(new TableflipCommand(this));
+        this.getCommand("tutorial").setExecutor(new TutorialCommand(this));
         this.getCommand("upvote").setExecutor(new UpvoteCommand(this));
         this.getCommand("discord").setExecutor(new DiscordCommand(this));
+        this.getCommand("tutorial").setExecutor(new TutorialCommand(this));
 
         // Register event listeners
         this.getServer().getPluginManager().registerEvents(new AdvancementListener(this), this);

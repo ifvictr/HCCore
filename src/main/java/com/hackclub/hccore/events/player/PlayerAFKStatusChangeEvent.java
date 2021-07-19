@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerEvent;
 public class PlayerAFKStatusChangeEvent extends PlayerEvent {
     private static final HandlerList handlers = new HandlerList();
 
-    private boolean isAfk;
+    private final boolean isAfk;
 
     public PlayerAFKStatusChangeEvent(Player player, boolean isAfk) {
         super(player);

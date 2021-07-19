@@ -2,6 +2,10 @@ package com.hackclub.hccore.listeners;
 
 import com.hackclub.hccore.HCCorePlugin;
 import com.hackclub.hccore.PlayerData;
+import com.hackclub.hccore.utils.TutorialUtil;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,14 +13,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.event.player.*;
 
 public class PlayerListener implements Listener {
     private final HCCorePlugin plugin;
@@ -87,6 +84,10 @@ public class PlayerListener implements Listener {
         event.getPlayer().resetTitle();
         event.setJoinMessage(ChatColor.YELLOW
                 + ChatColor.stripColor(event.getPlayer().getDisplayName()) + " joined the game");
+
+        if (!event.getPlayer().hasPlayedBefore()) {
+            TutorialUtil.send(event.getPlayer(), true);
+        }
     }
 
     @EventHandler

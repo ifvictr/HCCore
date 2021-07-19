@@ -1,6 +1,10 @@
 package com.hackclub.hccore.commands;
 
 import com.hackclub.hccore.HCCorePlugin;
+
+import com.comphenix.protocol.PacketType;
+import com.hackclub.hccore.HCCorePlugin;
+import com.hackclub.hccore.discord.DiscordBot;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
@@ -8,9 +12,15 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import java.util.List;
+
 
 public class DiscordCommand implements CommandExecutor {
-    private HCCorePlugin plugin;
+    private final HCCorePlugin plugin;
 
     public DiscordCommand(HCCorePlugin plugin) {
         this.plugin = plugin;

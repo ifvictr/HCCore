@@ -43,7 +43,7 @@ public class LocCommand implements TabExecutor {
                     sender.sendMessage(ChatColor.RED + "Please specify the location name");
                     break;
                 }
-
+                
                 if (!data.getSavedLocations().containsKey(locationName)) {
                     sender.sendMessage(ChatColor.RED + "No location with that name was found");
                     break;
@@ -54,7 +54,7 @@ public class LocCommand implements TabExecutor {
                         ChatColor.GREEN + "Removed " + locationName + " from saved locations");
                 break;
             }
-            // /loc get <name>
+            // /loc get <name> 
             case "get": {
                 if (args.length < 2) {
                     sender.sendMessage(ChatColor.RED + "Please specify the location name");
@@ -175,7 +175,8 @@ public class LocCommand implements TabExecutor {
                         ChatColor.GREEN + String.format("%s has shared a location: %s (%s)",
                                 player.getName(), locationName, locationString));
                 recipData.getSavedLocations().put(player.getName() + ":" + locationName,
-                        sendLocation);
+                        sendLocation);          
+
                 break;
             }
             default:

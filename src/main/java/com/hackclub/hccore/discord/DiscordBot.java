@@ -17,6 +17,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.*;
 import org.bukkit.event.Event;
@@ -35,9 +36,9 @@ import java.util.logging.Level;
 
 public class DiscordBot extends ListenerAdapter implements Listener {
     private JDA jda;
-    private HCCorePlugin plugin;
+    private final HCCorePlugin plugin;
     private TextChannel channel;
-    private String prefix;
+    private final String prefix;
 
     public DiscordBot(HCCorePlugin plugin) {
         this.plugin = plugin;

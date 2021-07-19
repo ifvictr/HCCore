@@ -36,7 +36,7 @@ public class SpawnCommand implements CommandExecutor {
         int distanceFromSpawn =
                 (int) player.getLocation().distance(player.getWorld().getSpawnLocation());
         int allowedRadius =
-                this.plugin.getConfig().getInt("settings.spawn-command.allowed-radius");;
+                this.plugin.getConfig().getInt("settings.spawn-command.allowed-radius");
         if (distanceFromSpawn > allowedRadius) {
             sender.sendMessage(ChatColor.RED + "You need to be within " + allowedRadius
                     + " blocks from spawn to use this command. Currently, you’re "

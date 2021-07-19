@@ -143,13 +143,13 @@ public class StatsCommand implements TabExecutor {
 
         if (extended) {
             sender.sendMessage("- Distance by elytra: "
-                    + toSIPrefix((double) player.getStatistic(Statistic.AVIATE_ONE_CM)) + "m");
+                    + toSIPrefix(player.getStatistic(Statistic.AVIATE_ONE_CM)) + "m");
             sender.sendMessage("- Distance by minecart: "
-                    + toSIPrefix((double) player.getStatistic(Statistic.MINECART_ONE_CM)) + "m");
+                    + toSIPrefix(player.getStatistic(Statistic.MINECART_ONE_CM)) + "m");
             sender.sendMessage("- Distance by horse: "
-                    + toSIPrefix((double) player.getStatistic(Statistic.HORSE_ONE_CM)) + "m");
+                    + toSIPrefix(player.getStatistic(Statistic.HORSE_ONE_CM)) + "m");
             sender.sendMessage("- Distance walked: "
-                    + toSIPrefix((double) player.getStatistic(Statistic.WALK_ONE_CM)) + "m");
+                    + toSIPrefix(player.getStatistic(Statistic.WALK_ONE_CM)) + "m");
             sender.sendMessage("- Damage taken: " + player.getStatistic(Statistic.DAMAGE_TAKEN));
             sender.sendMessage("- Damage dealt: " + player.getStatistic(Statistic.DAMAGE_DEALT));
             sender.sendMessage("- Times jumped: " + player.getStatistic(Statistic.JUMP));
@@ -162,7 +162,7 @@ public class StatsCommand implements TabExecutor {
     // converts numbers to their SI prefix laden counterparts
     private static String toSIPrefix(double number) {
         if (number < 100) {
-            return String.valueOf(number) + " c";
+            return number + " c";
         } else if (number < 100000) {
             number = Math.round(number / 100);
             return String.valueOf(number);
